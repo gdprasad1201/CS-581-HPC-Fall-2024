@@ -1,4 +1,0 @@
-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
-https://github.com/gdprasad1201/CS-581-HPC-Fall-2024.git
-
-ssh ualclsd0192@asax.asc.edu
