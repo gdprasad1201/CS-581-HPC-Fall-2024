@@ -1,0 +1,22 @@
+setting asax scratch directory
+ 
+============================================================
+=====         Summary of your script job               =====
+============================================================
+  The script file is: script.sh
+  The time limit is 12:00:00 HH:MM:SS.
+  The target directory is: /home/ualclsd0192/HW1
+  The working directory is:  /scratch-local/ualclsd0192.1000x5000.108094.asax-pbs1
+  The memory limit is: 8gb
+  The job will start running after: 202409231416.26
+  Job Name: 1000x5000
+  Queue: -q class -W group_list=classq
+  Constraints: 
+  Using  1  cores on master node  asax020.asc.edu
+  Node list:  asax020.asc.edu
+  Cores:  1
+  Command typed:
+/scripts/run_script script.sh     
+  Queue submit command:
+qsub -q class -W group_list=classq -j oe -N 1000x5000 -a 202409231416.26 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=ncpus=1:mem=8000mb 
+Time taken: 104.621228 seconds
