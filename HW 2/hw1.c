@@ -90,7 +90,7 @@ void gameOfLife(int** board, int N, int maxGenerations) {
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 3) {
         printf("Usage: %s <size of board> <max generations>\n", argv[0]);
         return 1;
