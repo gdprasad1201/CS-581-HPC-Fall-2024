@@ -92,8 +92,6 @@ void gameOfLife(int** board, int N, int maxGenerations) {
         board = newBoard;  // Update the board with the new generation
         generation++;  // Increment the generation counter
     }
-
-    board = newBoard;
 }
 
 int main(int argc, char **argv) {
