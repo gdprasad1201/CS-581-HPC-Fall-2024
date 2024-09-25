@@ -13,6 +13,9 @@
 #include <sys/time.h>
 #include <time.h>
 
+#define DEAD 0
+#define ALIVE 1
+
 double gettime() {
     struct timeval tval;
 
@@ -25,7 +28,7 @@ double gettime() {
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
         for (int j = 1; j <= N; j++) {
-            if (board[i][j]) {
+            if (board[i][j] == ALIVE) {
                 printf(" %d ", board[i][j]);
             } else {
                 printf(" %d ", board[i][j]);
@@ -37,7 +40,7 @@ void printBoard(int** board, int N) {
 
 void generateBoard(int** board, int N) {
     for (int i = 0; i < N + 2; i++) {
-        board[0][i] = board[i][0] = board[N + 1][i] = board[i][N + 1] = 0;
+        board[0][i] = board[i][0] = board[N + 1][i] = board[i][N + 1] = DEAD;
     }
 
     srand(time(0));
@@ -64,19 +67,19 @@ void gameOfLife(int** board, int N, int maxGenerations) {
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
                 int liveNeighbors = countLiveNeighbors(newBoard, i, j);
-                if (board[i][j]) {
+                if (board[i][j] == ALIVE) {
                     if (liveNeighbors < 2 || liveNeighbors > 3) {
-                        newBoard[i][j] = 0;
+                        newBoard[i][j] = DEAD;
                         change = true;
                     } else {
-                        newBoard[i][j] = 1;
+                        newBoard[i][j] = ALIVE;
                     }
-                } else if (!board[i][j]) {
+                } else if (board[i][j] == DEAD) {
                     if (liveNeighbors == 3) {
-                        newBoard[i][j] = 1;
+                        newBoard[i][j] = ALIVE;
                         change = true;
                     } else {
-                        newBoard[i][j] = 0;
+                        newBoard[i][j] = DEAD;
                     }
                 }
             }
