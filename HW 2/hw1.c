@@ -28,11 +28,7 @@ double gettime() {
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
         for (int j = 1; j <= N; j++) {
-            if (board[i][j] == ALIVE) {
-                printf(" %d ", board[i][j]);
-            } else {
-                printf(" %d ", board[i][j]);
-            }
+            printf("%d ", board[i][j]);
         }
         printf("\n");
     }
