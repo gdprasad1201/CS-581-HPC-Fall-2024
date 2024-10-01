@@ -2,7 +2,7 @@
    Name: Gowtham Prasad
    Email: gdprasad@crimson.ua.edu
    Course Section: CS 581
-   Homework #: 1
+   Homework #: 2
    Instructions to compile the program: gcc hw1.c -o hw1
    Instructions to run the program: ./hw1 <size of board> <max generations>
 */
