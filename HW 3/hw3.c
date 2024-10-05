@@ -18,13 +18,13 @@
 #define ALIVE 1
 #define DEAD 0
 
-double gettime() {
-    struct timeval tval;
+// double gettime() {
+//     struct timeval tval;
 
-    gettimeofday(&tval, NULL);
+//     gettimeofday(&tval, NULL);
 
-    return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
-}
+//     return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
+// }
 
 // Function to print the board
 void printBoard(int** board, int N) {
