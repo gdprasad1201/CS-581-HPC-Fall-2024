@@ -18,15 +18,15 @@
 #define ALIVE 1
 #define DEAD 0
 
-// double gettime() {
-//     struct timeval tval;
+double gettime() {
+    struct timeval tval;
 
-//     gettimeofday(&tval, NULL);
+    gettimeofday(&tval, NULL);
 
-//     return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
-// }
+    return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
+}
 
-// Function to print the board
+
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
         for (int j = 1; j <= N; j++) {
@@ -42,59 +42,26 @@ void generateBoard(int** board, int N) {
         board[0][i] = board[i][0] = board[N + 1][i] = board[i][N + 1] = DEAD;
     }
 
-    srand(time(0));
+    srand(time(NULL));
     for (int i = 1; i <= N; i++) {  // Initialize the board with random values of 0 and 1
         for (int j = 1; j <= N; j++) {
             board[i][j] = rand() % 2;
         }
     }
-
-    // board[1][1] = ALIVE;
-    // board[1][2] = ALIVE;
-    // board[1][3] = DEAD;
-    // board[2][1] = DEAD;
-    // board[2][2] = ALIVE;
-    // board[2][3] = ALIVE;
-    // board[3][1] = ALIVE;
-    // board[3][2] = DEAD;
-    // board[3][3] = ALIVE;
-}
-
-int countLiveNeighbors(int** board, int i, int j) {
-    // int liveNeighbors = 0;
-
-    // for (int x = i - 1; x <= i + 1; x++) {
-    //     for (int y = j - 1; y <= j + 1; y++) {
-    //         if (x == i && y == j) {
-    //             continue;
-    //         }
-
-    //         if (board[x][y] == ALIVE) {
-    //             liveNeighbors++;
-    //         }
-    //     }
-    // }
-
-    // return liveNeighbors;
-
-    return board[i - 1][j - 1] + board[i - 1][j] + board[i - 1][j + 1] +
-           board[i][j - 1] + board[i][j + 1] + board[i + 1][j - 1] +
-           board[i + 1][j] + board[i + 1][j + 1];
 }
 
 int main(int argc, char** argv) {
-    // if (argc != 5) {
-    //     printf("Usage: %s <N> <maxGenerations> <numThreads> <outputFile>\n", argv[0]);
-    //     exit(1);
-    // }
+    if (argc != 5) {
+        printf("Usage: %s <N> <maxGenerations> <numThreads> <outputFile>\n", argv[0]);
+        exit(1);
+    }
 
-    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j, generation = 0;
+    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j;
     double timeTaken[3];
     bool change;
 
     char* outputFileDirectory = malloc(200 * sizeof(char));
     strcpy(outputFileDirectory, argv[4]);
-    
 
     int** board = malloc((N + 2) * sizeof(int*));
     for (int k = 0; k < N + 2; k++) {
@@ -104,20 +71,20 @@ int main(int argc, char** argv) {
     for (int test = 0; test < 3; test++) {
         generateBoard(board, N);
 
-        printf("Initial board:\n");
-        printBoard(board, N);  // Print the initial board
+        // printf("Initial board:\n");
+        // printBoard(board, N);  
 
-        double start = omp_get_wtime();
+        double start = gettime();
 
         // Create a parallel region only once before the iteration loop
-        #pragma omp parallel for num_threads(numThreads) default(none) private(i, j) shared(generation, board, N, maxGenerations, change)
-        for (generation = 0; generation < maxGenerations; generation++) {
+        #pragma omp parallel for num_threads(numThreads) default(none) private(i, j) shared(change, board, N, maxGenerations)
+        for (int generation = 0; generation < maxGenerations; generation++) {
             change = false;
             int** newBoard = board;
 
             for (i = 1; i <= N; i++) {
                 for (j = 1; j <= N; j++) {
-                    int liveNeighbors = countLiveNeighbors(board, i, j);
+                    int liveNeighbors = board[i - 1][j - 1] + board[i - 1][j] + board[i - 1][j + 1] + board[i][j - 1] + board[i][j + 1] + board[i + 1][j - 1] + board[i + 1][j] + board[i + 1][j + 1];
                     if (board[i][j] == ALIVE) {
                         if (liveNeighbors < 2 || liveNeighbors > 3) {
                             newBoard[i][j] = DEAD;
@@ -145,7 +112,7 @@ int main(int argc, char** argv) {
             board = newBoard;
         }
 
-        double end = omp_get_wtime();
+        double end = gettime();
 
         timeTaken[test] = end - start;
 
@@ -154,7 +121,7 @@ int main(int argc, char** argv) {
 
         // printf("Time taken: %lf seconds\n", end - start);  // Print the time taken
         printf("Test %d) Time taken: %lf seconds\n", test + 1, timeTaken[test]);  // Print the time taken
-    }
+    // }
 
     double averageTime = (timeTaken[0] + timeTaken[1] + timeTaken[2]) / 3;
     printf("Average time taken: %lf seconds\n", averageTime);  // Print the average time taken
