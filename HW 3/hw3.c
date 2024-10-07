@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
 
         // printf("Time taken: %lf seconds\n", end - start);  // Print the time taken
         printf("Test %d) Time taken: %lf seconds\n", test + 1, timeTaken[test]);  // Print the time taken
-    // }
+    }
 
     double averageTime = (timeTaken[0] + timeTaken[1] + timeTaken[2]) / 3;
     printf("Average time taken: %lf seconds\n", averageTime);  // Print the average time taken
