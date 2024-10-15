@@ -18,14 +18,13 @@
 #define ALIVE 1
 #define DEAD 0
 
-double gettime() {
-    struct timeval tval;
+// double gettime() {
+//     struct timeval tval;
 
-    gettimeofday(&tval, NULL);
+//     gettimeofday(&tval, NULL);
 
-    return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
-}
-
+//     return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
+// }
 
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
@@ -38,61 +37,76 @@ void printBoard(int** board, int N) {
 }
 
 void generateBoard(int** board, int N) {
-    for (int i = 0; i < N + 2; i++) {
-        board[0][i] = board[i][0] = board[N + 1][i] = board[i][N + 1] = DEAD;
+    for (int k = 0; k < N + 2; k++) {
+        board[0][k] = board[k][0] = board[N + 1][k] = board[k][N + 1] = DEAD;
     }
 
-    srand(time(NULL));
     for (int i = 1; i <= N; i++) {  // Initialize the board with random values of 0 and 1
+        srand(54321 | i);
         for (int j = 1; j <= N; j++) {
-            board[i][j] = rand() % 2;
+            if (drand48() < 0.5) {
+                board[i][j] = ALIVE;
+            } else {
+                board[i][j] = DEAD;
+            }
         }
     }
 }
 
+void freearray(int **a) {
+    free(&a[0][0]);
+    free(a);
+}
+
 int main(int argc, char** argv) {
     if (argc != 5) {
-        printf("Usage: %s <N> <maxGenerations> <numThreads> <outputFile>\n", argv[0]);
+        printf("Usage: %s <N> <maxium iterations> <number of threads> <output text file directory>\n", argv[0]);
         exit(1);
     }
 
-    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j;
-    double timeTaken[3];
+    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j, tid;
     bool change;
 
-    char* outputFileDirectory = malloc(200 * sizeof(char));
-    strcpy(outputFileDirectory, argv[4]);
-
     int** board = malloc((N + 2) * sizeof(int*));
+    int** newBoard = malloc((N + 2) * sizeof(int*));
+    int** temp;
     for (int k = 0; k < N + 2; k++) {
         board[k] = malloc((N + 2) * sizeof(int));
+        newBoard[k] = malloc((N + 2) * sizeof(int));
     }
 
-    for (int test = 0; test < 3; test++) {
-        generateBoard(board, N);
+    generateBoard(board, N);
+    generateBoard(newBoard, N);
 
-        // printf("Initial board:\n");
-        // printBoard(board, N);  
+    // printf("Initial board:\n");
+    // printBoard(board, N);
 
-        double start = gettime();
+    double start = omp_get_wtime();
 
-        // Create a parallel region only once before the iteration loop
-        #pragma omp parallel for num_threads(numThreads) default(none) private(i, j) shared(change, board, N, maxGenerations)
-        for (int generation = 0; generation < maxGenerations; generation++) {
-            change = false;
-            int** newBoard = board;
+    for (int generation = 0; generation < maxGenerations; generation++) {
+       change = false;
 
-            for (i = 1; i <= N; i++) {
+        #pragma omp parallel num_threads(numThreads) private(i, j, tid) shared(generation, board, newBoard, change, maxGenerations, N)
+        {
+            tid = omp_get_thread_num();
+            int start = tid * (N / numThreads) + 1;
+            int end = (tid + 1) * (N / numThreads);
+
+            if (tid == numThreads - 1) {
+                end += (N % numThreads);
+            }
+
+            for (i = start; i <= end; i++) {
                 for (j = 1; j <= N; j++) {
                     int liveNeighbors = board[i - 1][j - 1] + board[i - 1][j] + board[i - 1][j + 1] + board[i][j - 1] + board[i][j + 1] + board[i + 1][j - 1] + board[i + 1][j] + board[i + 1][j + 1];
-                    if (board[i][j] == ALIVE) {
+                    if (board[i][j]) {
                         if (liveNeighbors < 2 || liveNeighbors > 3) {
                             newBoard[i][j] = DEAD;
                             change = true;
                         } else {
                             newBoard[i][j] = ALIVE;
                         }
-                    } else if (board[i][j] == DEAD) {
+                    } else if (!board[i][j]) {
                         if (liveNeighbors == 3) {
                             newBoard[i][j] = ALIVE;
                             change = true;
@@ -102,55 +116,53 @@ int main(int argc, char** argv) {
                     }
                 }
             }
-
-            // After each thread has finished, update the board
-            if (!change) {
-                maxGenerations = generation;
-                continue;
-            }
-
-            board = newBoard;
         }
 
-        double end = gettime();
-
-        timeTaken[test] = end - start;
-
-        // printf("Final board:\n");
-        // printBoard(board, N);  // Print the final board
-
-        // printf("Time taken: %lf seconds\n", end - start);  // Print the time taken
-        printf("Test %d) Time taken: %lf seconds\n", test + 1, timeTaken[test]);  // Print the time taken
+        
+        if (!change) {
+            break;
+        }
+        temp = board;
+        board = newBoard;
+        newBoard = temp;
     }
 
-    double averageTime = (timeTaken[0] + timeTaken[1] + timeTaken[2]) / 3;
-    printf("Average time taken: %lf seconds\n", averageTime);  // Print the average time taken
+    double end = omp_get_wtime();
 
-    strcat(outputFileDirectory, "/output.");
+    freearray(newBoard);
 
-    for (int i = 1; i <= 3; i++) {
-        strcat(outputFileDirectory, argv[i]);
-        if (i <= 2) {
+    // printf("Final board:\n");
+    // printBoard(board, N);  // Print the final board
+    printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
+    printf("Time taken: %lf seconds\n", end - start);  // Print the time taken
+
+    char* outputFileDirectory = (char*)malloc(100 * sizeof(char));
+    strcpy(outputFileDirectory, argv[4]);
+
+    strcat(outputFileDirectory, "output.");
+
+    for (int k = 1; k <= 3; k++) {
+        strcat(outputFileDirectory, argv[k]);
+        if (k <= 2) {
             strcat(outputFileDirectory, ".");
         }
         else {
             strcat(outputFileDirectory, ".txt");
         }
     }
-    
-    FILE* output = fopen(outputFileDirectory, "w");
-    fprintf(output, "%d x %d board with %d maximum iterations and %d threads\n", N, N, maxGenerations, numThreads);
-    fprintf(output, "\t\t\tTest 1) Time taken: %lf seconds\n", timeTaken[0]);
-    fprintf(output, "\t\t\tTest 2) Time taken: %lf seconds\n", timeTaken[1]);
-    fprintf(output, "\t\t\tTest 3) Time taken: %lf seconds\n", timeTaken[2]);
-    fprintf(output, "\t\t\tAverage time taken: %lf seconds\n", averageTime);
-    fclose(output);
 
-    for (int k = 0; k < N + 2; k++) {
-        free(board[k]);
+    FILE* output = fopen(outputFileDirectory, "w");
+    for (int k = 1; k <= N; k++) {
+        for (int l = 1; l <= N; l++) {
+            fprintf(output, "%d ", board[k][l]);
+        }
+        fprintf(output, "\n");
     }
-    free(board);
+    fclose(output);
+    
     free(outputFileDirectory);
+
+    freearray(board);
 
     return 0;
 }
