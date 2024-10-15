@@ -3,7 +3,7 @@
    Email: gdprasad@crimson.ua.edu
    Course Section: CS 581
    Homework #: 3
-   Instructions to compile the program: gcc hw3.c -o hw3
+   Instructions to compile the program: gcc -Wall -o hw3 hw3.c -fopenmp
    Instructions to run the program: ./hw3 <size of board> <max iterations> <number of threads> <output file directory>
 */
 
