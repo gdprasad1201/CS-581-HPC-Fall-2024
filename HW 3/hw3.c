@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
     char* outputFileDirectory = (char*)malloc(100 * sizeof(char));
     strcpy(outputFileDirectory, argv[4]);
 
-    strcat(outputFileDirectory, "output.");
+    strcat(outputFileDirectory, "/output.");
 
     for (int k = 1; k <= 3; k++) {
         strcat(outputFileDirectory, argv[k]);
