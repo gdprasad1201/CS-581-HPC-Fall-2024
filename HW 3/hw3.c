@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
-    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j, tid;
+    int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j, tid, generation;
     bool change;
 
     int** board = allocarray(N + 2, N + 2);
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
     double start = omp_get_wtime();
 
     // Compute the next generation of the board
-    for (int generation = 0; generation < maxGenerations; generation++) {
+    for (generation = 1; generation <= maxGenerations; generation++) {
        change = false;
 
         // Update the board in parallel using OpenMP threads
@@ -138,7 +138,13 @@ int main(int argc, char** argv) {
     // printf("Final board:\n");
     // printBoard(board, N);  // Print the final board
     printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
-    printf("Time taken: %lf seconds\n", end - start);  // Print the time taken
+    if (generation == maxGenerations) {
+        printf("\t\tThe Game of Life ends when the maximum number of generations is reached.\n");
+    } else if (!change) {
+        printf("\t\tThe Game of Life ends when the board is stable because no change occured at generation %d.\n", generation);
+    }
+    printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
+    
 
     char* outputFileDirectory = (char*)malloc(100 * sizeof(char));
     strcpy(outputFileDirectory, argv[4]);
