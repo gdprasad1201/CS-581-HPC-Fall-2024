@@ -26,6 +26,7 @@
 //     return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
 // }
 
+// Print the board
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
         for (int j = 1; j <= N; j++) {
@@ -36,6 +37,7 @@ void printBoard(int** board, int N) {
     printf("\n");
 }
 
+// Generate the board with random values of 0 and 1 and set the boundaries to 0
 void generateBoard(int** board, int N) {
     for (int k = 0; k < N + 2; k++) {
         board[0][k] = board[k][0] = board[N + 1][k] = board[k][N + 1] = DEAD;
@@ -53,6 +55,7 @@ void generateBoard(int** board, int N) {
     }
 }
 
+// Free the memory allocated to the board
 void freearray(int **a) {
     free(&a[0][0]);
     free(a);
@@ -83,15 +86,18 @@ int main(int argc, char** argv) {
 
     double start = omp_get_wtime();
 
+    // Compute the next generation of the board
     for (int generation = 0; generation < maxGenerations; generation++) {
        change = false;
 
+        // Update the board in parallel using OpenMP threads
         #pragma omp parallel num_threads(numThreads) private(i, j, tid) shared(generation, board, newBoard, change, maxGenerations, N)
         {
-            tid = omp_get_thread_num();
-            int start = tid * (N / numThreads) + 1;
-            int end = (tid + 1) * (N / numThreads);
+            tid = omp_get_thread_num(); // Get the thread ID
+            int start = tid * (N / numThreads) + 1; // Calculate the start and end indices for each thread
+            int end = (tid + 1) * (N / numThreads); // Calculate the start and end indices for each thread
 
+            // Update the start and end indices for the last thread
             if (tid == numThreads - 1) {
                 end += (N % numThreads);
             }
