@@ -18,14 +18,6 @@
 #define ALIVE 1
 #define DEAD 0
 
-// double gettime() {
-//     struct timeval tval;
-
-//     gettimeofday(&tval, NULL);
-
-//     return ((double)tval.tv_sec + (double)tval.tv_usec / 1000000.0);
-// }
-
 // Print the board
 void printBoard(int** board, int N) {
     for (int i = 1; i <= N; i++) {
@@ -55,6 +47,16 @@ void generateBoard(int** board, int N) {
     }
 }
 
+int **allocarray(int P, int Q) {
+    int i, *p, **a;
+
+    p = (int *)malloc(P * Q * sizeof(int));
+    a = (int **)malloc(P * sizeof(int *));
+    for (i = 0; i < P; i++) a[i] = &p[i * Q];
+
+    return a;
+}
+
 // Free the memory allocated to the board
 void freearray(int **a) {
     free(&a[0][0]);
@@ -70,13 +72,9 @@ int main(int argc, char** argv) {
     int N = atoi(argv[1]), maxGenerations = atoi(argv[2]), numThreads = atoi(argv[3]), i, j, tid;
     bool change;
 
-    int** board = malloc((N + 2) * sizeof(int*));
-    int** newBoard = malloc((N + 2) * sizeof(int*));
+    int** board = allocarray(N + 2, N + 2);
+    int** newBoard = allocarray(N + 2, N + 2);
     int** temp;
-    for (int k = 0; k < N + 2; k++) {
-        board[k] = malloc((N + 2) * sizeof(int));
-        newBoard[k] = malloc((N + 2) * sizeof(int));
-    }
 
     generateBoard(board, N);
     generateBoard(newBoard, N);
@@ -124,7 +122,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        
+        #pragma omp barrier
         if (!change) {
             break;
         }
@@ -146,7 +144,6 @@ int main(int argc, char** argv) {
     strcpy(outputFileDirectory, argv[4]);
 
     strcat(outputFileDirectory, "/output.");
-
     for (int k = 1; k <= 3; k++) {
         strcat(outputFileDirectory, argv[k]);
         if (k <= 2) {
@@ -167,7 +164,6 @@ int main(int argc, char** argv) {
     fclose(output);
     
     free(outputFileDirectory);
-
     freearray(board);
 
     return 0;
