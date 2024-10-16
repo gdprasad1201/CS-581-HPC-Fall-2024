@@ -1,0 +1,42 @@
+setting asax scratch directory
+ 
+============================================================
+=====         Summary of your script job               =====
+============================================================
+  The script file is: scriptIntel.sh
+  The time limit is 12:00:00 HH:MM:SS.
+  The target directory is: /home/ualclsd0192/HW3
+  The working directory is:  /scratch-local/ualclsd0192.IntelTest2.116735.asax-pbs1
+  The memory limit is: 8gb
+  The job will start running after: 202410151658.38
+  Job Name: IntelTest2
+  Queue: -q class -W group_list=classq
+  Constraints: 
+  Using  1  cores on master node  asax020.asc.edu
+  Node list:  asax020.asc.edu
+  Cores:  1
+  Command typed:
+/scripts/run_script scriptIntel.sh     
+  Queue submit command:
+qsub -q class -W group_list=classq -j oe -N IntelTest2 -a 202410151658.38 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=ncpus=1:mem=8000mb 
+5000 x 5000 board computed with 5000 maximum iterations and 1 threads:
+		Time taken: 298.461361 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 2 threads:
+		Time taken: 299.027499 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 4 threads:
+		Time taken: 299.708038 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 8 threads:
+		Time taken: 301.335809 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 10 threads:
+		Time taken: 300.649781 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 16 threads:
+		Time taken: 307.046970 seconds
+
+5000 x 5000 board computed with 5000 maximum iterations and 20 threads:
+		Time taken: 301.894783 seconds
+

@@ -122,13 +122,15 @@ int main(int argc, char** argv) {
             }
         }
 
-        #pragma omp barrier
-        if (!change) {
-            break;
+        #pragma omp barrier 
+        {
+            if (!change) {
+                break;
+            }
+            temp = board;
+            board = newBoard;
+            newBoard = temp;
         }
-        temp = board;
-        board = newBoard;
-        newBoard = temp;
     }
 
     double end = omp_get_wtime();
@@ -138,11 +140,6 @@ int main(int argc, char** argv) {
     // printf("Final board:\n");
     // printBoard(board, N);  // Print the final board
     printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
-    if (generation == maxGenerations) {
-        printf("\t\tThe Game of Life ends when the maximum number of generations is reached.\n");
-    } else if (!change) {
-        printf("\t\tThe Game of Life ends when the board is stable because no change occured at generation %d.\n", generation);
-    }
     printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
     
 

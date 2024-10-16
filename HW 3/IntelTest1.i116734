@@ -1,0 +1,18 @@
+ 
+============================================================
+=====     Queued job information at submit time        =====
+============================================================
+  The submitted file is: scriptIntel.sh
+  The time limit is 12:00:00 HH:MM:SS.
+  The target directory is: /home/ualclsd0192/HW3
+  The memory limit is: 8gb
+  The job will start running after: 202410151658.21
+  Job Name: IntelTest1
+  Queue: -q class -W group_list=classq
+  Constraints: 
+  Command typed:
+/scripts/run_script scriptIntel.sh     
+  Queue submit command:
+qsub -q class -W group_list=classq -j oe -N IntelTest1 -a 202410151658.21 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=ncpus=1:mem=8000mb 
+  Job number: 116734
+ 
