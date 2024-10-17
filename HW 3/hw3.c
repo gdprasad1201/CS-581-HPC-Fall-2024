@@ -135,10 +135,9 @@ int main(int argc, char** argv) {
 
     freearray(newBoard);
 
-#ifdef DEBUG
-    printf("Final board:\n");
-    printBoard(board, N);  // Print the final board
-#endif
+    // printf("Final board:\n");
+    // printBoard(board, N);  // Print the final board
+
     printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
     printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
     
