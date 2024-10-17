@@ -4,7 +4,6 @@
    Course Section: CS 581
    Homework #: 3
    Instructions to compile the program: gcc -Wall -o hw3 hw3.c -fopenmp
-   Instructions to compile the program with debugging: gcc -Wall -o hw3 hw3.c -fopenmp -DDEBUG
    Instructions to run the program: ./hw3 <size of board> <max iterations> <number of threads> <output file directory>
 */
 
