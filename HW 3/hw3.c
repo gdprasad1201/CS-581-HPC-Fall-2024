@@ -4,6 +4,7 @@
    Course Section: CS 581
    Homework #: 3
    Instructions to compile the program: gcc -Wall -o hw3 hw3.c -fopenmp
+   Instructions to compile the program with debugging: gcc -Wall -o hw3 hw3.c -fopenmp -DDEBUG
    Instructions to run the program: ./hw3 <size of board> <max iterations> <number of threads> <output file directory>
 */
 
@@ -79,9 +80,6 @@ int main(int argc, char** argv) {
     generateBoard(board, N);
     generateBoard(newBoard, N);
 
-    // printf("Initial board:\n");
-    // printBoard(board, N);
-
     double start = omp_get_wtime();
 
     // Compute the next generation of the board
@@ -137,13 +135,15 @@ int main(int argc, char** argv) {
 
     freearray(newBoard);
 
-    // printf("Final board:\n");
-    // printBoard(board, N);  // Print the final board
+#ifdef DEBUG
+    printf("Final board:\n");
+    printBoard(board, N);  // Print the final board
+#endif
     printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
     printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
     
 
-    char* outputFileDirectory = (char*)malloc(100 * sizeof(char));
+    char* outputFileDirectory = (char*)malloc(150 * sizeof(char));
     strcpy(outputFileDirectory, argv[4]);
 
     strcat(outputFileDirectory, "/output.");
