@@ -65,8 +65,7 @@ void freearray(int** a) {
 }
 
 void swap(int*** a, int*** b) {
-    int** temp;
-    temp = *a;
+    int** temp = *a;
     *a = *b;
     *b = temp;
 }
@@ -145,26 +144,22 @@ int main(int argc, char** argv) {
                     recordGen = generation;
                     generation = maxGenerations;
                 }
-            }
-            
-            #pragma omp single
-            {  
+
                 swap(&board, &newBoard);
                 #ifdef DEBUG
-                    if(generation != maxGenerations){
+                    if (generation != maxGenerations) {
                         printf("Generation %d:\n", generation);
                         printBoard(board, N); 
                     }
                     
                 #endif
-            }    
+            }   
         }
     }
     
 
     double end = omp_get_wtime();
 
-   // freearray(temp);
     freearray(newBoard);
     #ifdef DEBUG
         printf("Final board:\n");
@@ -182,7 +177,7 @@ int main(int argc, char** argv) {
     printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
     
 
-    char* outputFileDirectory = (char*)malloc(150 * sizeof(char));
+    char outputFileDirectory[150];
     strcpy(outputFileDirectory, argv[4]);
 
     strcat(outputFileDirectory, "/output.");
@@ -205,7 +200,6 @@ int main(int argc, char** argv) {
     }
     fclose(output);
     
-    free(outputFileDirectory);
     freearray(board);
 
     return 0;
