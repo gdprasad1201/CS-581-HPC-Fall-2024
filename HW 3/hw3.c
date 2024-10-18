@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
         }
 
         #ifdef DEBUG
-            printf("tid=%d iStart=%d iEnd=%d\n", tid, iStart, iEnd);
+            printf("tid = %d\tiStart = %d\tiEnd = %d\n", tid, iStart, iEnd);
         #endif
 
         for (generation = 0; generation < maxGenerations; generation+=1) {
@@ -150,8 +150,7 @@ int main(int argc, char** argv) {
                     if (generation != maxGenerations) {
                         printf("Generation %d:\n", generation);
                         printBoard(board, N); 
-                    }
-                    
+                    } 
                 #endif
             }   
         }
