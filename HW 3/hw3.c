@@ -160,11 +160,11 @@ int main(int argc, char** argv) {
     double end = omp_get_wtime();
 
     freearray(newBoard);
-    #ifdef DEBUG
-        printf("Final board:\n");
-        printBoard(board, N);  // Print the final board
+    #ifdef DEBUG2
+        // printf("Final board:\n");
+        // printBoard(board, N);  // Print the final board
 
-        if (recordGen) {
+        if (recordGen > 0) {
             printf("The Game of Life ends at iteration %d\n", recordGen);
         }
         else {
@@ -175,7 +175,6 @@ int main(int argc, char** argv) {
     printf("%d x %d board computed with %d maximum iterations and %d threads:\n", N, N, maxGenerations, numThreads);
     printf("\t\tTime taken: %lf seconds\n\n", end - start);  // Print the time taken
     
-
     char outputFileDirectory[150];
     strcpy(outputFileDirectory, argv[4]);
 
