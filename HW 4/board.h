@@ -11,11 +11,11 @@
 #define ALIVE 1
 #define DEAD 0
 
-int M, N, T;
+int N, N, T;
 char directory[100];
 
 void init_board(int* board) {
-    for (int row = 0; row < M; row++) {
+    for (int row = 0; row < N; row++) {
         srand(54321 | row);
         for (int col = 0; col < N; col++) {
             // random value of 0 or 1

@@ -9,11 +9,9 @@
 
 #include "board.h"
 
-// root process
 #define ROOT 0
 
 int main(int argc, char **argv) {
-    M = atoi(argv[1]);
     N = atoi(argv[1]);
     T = atoi(argv[2]);
     char processAMT[2];
@@ -40,15 +38,15 @@ int main(int argc, char **argv) {
     startwtime = MPI_Wtime();
     
     // Use a 1D array to represent the 2D board
-    int* board = (int *)malloc(M * N * sizeof(int));
+    int* board = (int *)malloc(N * N * sizeof(int));
 
     // setup the initial board
     if (rank == ROOT) {
         init_board(board);
     }
 
-    int remaining_rows = M % size;
-    int rows_per_process = M / size;
+    int remaining_rows = N % size;
+    int rows_per_process = N / size;
     // If the number of rows is not evenly divisible by the number of processes,
     // then the last process will have the remaining rows
     if (rank == (size - 1)) {
@@ -141,8 +139,8 @@ int main(int argc, char **argv) {
     // print the final board
     if (rank == ROOT) {
         endwtime = MPI_Wtime();
-        print_board(board, M, size);
-        printf("Matrix of size %d x %d with %d processes and %d maximum iterations", M, N, size, T);
+        print_board(board, N, size);
+        printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, T);
         printf("\nWall clock time: %fs\n", endwtime - startwtime);
     }
 
