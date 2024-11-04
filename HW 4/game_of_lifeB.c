@@ -1,3 +1,12 @@
+/* 
+   Name: Gowtham Prasad
+   Email: gdprasad@crimson.ua.edu
+   Course Section: CS 581 
+   Homework #: 4
+   To Compile: mpicc -g -Wall -o game_of_lifeB game_of_lifeB.c
+   To Run: mpirun -n <number of processes> ./game_of_lifeB <matrix size> <number of iterations> <output directory>
+*/
+
 #include "board.h"
 
 // root process
@@ -31,15 +40,11 @@ int main(int argc, char **argv) {
     startwtime = MPI_Wtime();
     
     // Use a 1D array to represent the 2D board
-    // int board[M][N];
     int* board = (int *)malloc(M * N * sizeof(int));
 
     // setup the initial board
     if (rank == ROOT) {
         init_board(board);
-        // printf("*** INITIAL BOARD ***\n");
-        // print_board(board, M, size);
-        // printf("\n");
     }
 
     int remaining_rows = M % size;
@@ -122,14 +127,7 @@ int main(int argc, char **argv) {
     // print the final board
     if (rank == ROOT) {
         endwtime = MPI_Wtime();
-        // printf("*** FINAL BOARD ***\n");
         print_board(board, M, size);
-        // for (int i = 0; i < M; i++) {
-        //     for (int j = 0; j < N; j++) {
-        //         printf("%d ", board[i * N + j]);
-        //     }
-        //     printf("\n");
-        // }
         printf("Matrix of size %d x %d with %d processes and %d maximum iterations", M, N, size, T);
         printf("\nWall clock time: %fs\n", endwtime - startwtime);
     }

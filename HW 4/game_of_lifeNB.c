@@ -1,3 +1,12 @@
+/* 
+   Name: Gowtham Prasad
+   Email: gdprasad@crimson.ua.edu
+   Course Section: CS 581 
+   Homework #: 4
+   To Compile: mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
+   To Run: mpirun -n <number of processes> ./game_of_lifeNB <matrix size> <number of iterations> <output directory>
+*/
+
 #include "board.h"
 
 // root process
@@ -31,15 +40,11 @@ int main(int argc, char **argv) {
     startwtime = MPI_Wtime();
     
     // Use a 1D array to represent the 2D board
-    // int board[M][N];
     int* board = (int *)malloc(M * N * sizeof(int));
 
     // setup the initial board
     if (rank == ROOT) {
         init_board(board);
-        // printf("*** INITIAL BOARD ***\n");
-        // print_board(board, M, size);
-        // printf("\n");
     }
 
     int remaining_rows = M % size;
@@ -82,8 +87,7 @@ int main(int argc, char **argv) {
     for (int step = 0; step < T; step++) {
         // process sends its top row to the previous process & receives the
         // bottom neighbor from the next process
-        // MPI_Isend(local_board + N, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, &sreq1);
-        // MPI_Irecv(local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, &rreq1);
+
         if (remaining_rows == 0) {
             MPI_Isend(local_board + N, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, &sreq1);
             MPI_Irecv(local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, &rreq1);
@@ -95,8 +99,6 @@ int main(int argc, char **argv) {
         
         // process sends its bottom row to the next process & receives the top
         // neighbor from the previous process
-        // MPI_Isend(local_board + (total_rpp - 2) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, &sreq2);
-        // MPI_Irecv(local_board, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, &rreq2);
 
         if (remaining_rows == 0) {
             MPI_Isend(local_board + (total_rpp - 2) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, &sreq2);
@@ -143,14 +145,7 @@ int main(int argc, char **argv) {
     // print the final board
     if (rank == ROOT) {
         endwtime = MPI_Wtime();
-        // printf("*** FINAL BOARD ***\n");
         print_board(board, M, size);
-        // for (int i = 0; i < M; i++) {
-        //     for (int j = 0; j < N; j++) {
-        //         printf("%d ", board[i * N + j]);
-        //     }
-        //     printf("\n");
-        // }
         printf("Matrix of size %d x %d with %d processes and %d maximum iterations", M, N, size, T);
         printf("\nWall clock time: %fs\n", endwtime - startwtime);
     }
