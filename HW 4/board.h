@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-// 2 possible states for a cell
 #define ALIVE 1
 #define DEAD 0
 
@@ -120,8 +119,7 @@ int count_neighbors(int* board, int row, int col, int M_local, int rank, int siz
 }
 
 bool update_board(int* board, int M_local, int rank, int size) {
-    int neighbors = 0;  // # of neighbors a cell has
-    // int new_board[M_local][N];
+    int neighbors = 0; 
     int* new_board = (int *)malloc(M_local * N * sizeof(int));
     int final_row = M_local + 1;
     bool flag = false;
@@ -130,23 +128,16 @@ bool update_board(int* board, int M_local, int rank, int size) {
         for (int col = 0; col < N; col++) {
             neighbors = count_neighbors(board, row, col, M_local, rank, size);
 
-            // cell is alive (1)
             if (board[row * N + col]) {
-                // underpopulation: less than 2 neighbors -> cell dies
-                // overpopulation: greater than 3 neighbors -> cell dies
                 if (neighbors < 2 || neighbors > 3) {
                     new_board[(row - 1) * N + col] = 0;
                     flag = true;
                 }
-                // 2 or 3 neighbors -> cell lives
                 else {
                     new_board[(row - 1) * N + col] = 1;
                 }
             }
-            // cell is not alive (0)
             else {
-                // reproduction: dead cell with exactly 3 neighbors -> cell
-                // becomes alive
                 if (neighbors == 3) {
                     new_board[(row - 1) * N + col] = 1;
                     flag = true;
@@ -159,7 +150,6 @@ bool update_board(int* board, int M_local, int rank, int size) {
         }
     }
 
-    // update the board with the new values
     for (int row = 1; row < final_row; row++) {
         for (int col = 0; col < N; col++) {
             board[row * N + col] = new_board[(row - 1) * N + col];
