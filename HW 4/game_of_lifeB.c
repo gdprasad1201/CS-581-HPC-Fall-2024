@@ -80,17 +80,15 @@ int main(int argc, char **argv) {
     }
     
     // every process updates their rows T number of times
-    for (int step = 0; step < T; step++) {
-        // process sends its top row to the previous process & receives the
-        // bottom neighbor from the next process
+    for (int iteration = 0; iteration < T; iteration++) {
+        // process sends its top row to the previous process & receives the bottom neighbor from the next process
         if (remaining_rows == 0) {
             MPI_Sendrecv(local_board + N, N, MPI_INT, top_neighbor, 0, local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         else {
             MPI_Sendrecv(local_board + N, N, MPI_INT, top_neighbor, 0, local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
-        // process sends its bottom row to the next process & receives the top
-        // neighbor from the previous process
+        // process sends its bottom row to the next process & receives the top neighbor from the previous process
         if (remaining_rows == 0) {
             MPI_Sendrecv(local_board + (total_rpp - 2) * N, N, MPI_INT, bottom_neighbor, 0, local_board, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
