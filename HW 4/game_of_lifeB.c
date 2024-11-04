@@ -12,6 +12,11 @@
 #define ROOT 0
 
 int main(int argc, char **argv) {
+    if (argc != 3) {
+        printf("Usage: %s <matrix size> <number of iterations> <output directory>\n", argv[0]);
+        return 1;
+    }
+
     N = atoi(argv[1]);
     T = atoi(argv[2]);
     char processAMT[2];
@@ -22,6 +27,12 @@ int main(int argc, char **argv) {
     int rank = 0, size = 0;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    if (size == 0) {
+        printf("Error: number of processes must be greater than 0\n");
+        MPI_Finalize();
+        return 1;
+    }
 
     strcpy(directory, argv[3]);
     strcat(directory, "/output.");
