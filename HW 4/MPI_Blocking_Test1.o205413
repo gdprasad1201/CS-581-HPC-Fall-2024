@@ -1,0 +1,41 @@
+setting asax scratch directory
+ 
+============================================================
+=====         Summary of your script job               =====
+============================================================
+  The script file is: scriptB.sh
+  The time limit is 12:00:00 HH:MM:SS.
+  The target directory is: /home/ualclsd0192/HW4
+  The working directory is:  /scratch-local/ualclsd0192.MPI_Blocking_Test1.205413.asax-pbs1
+  The memory limit is: 20gb
+  The job will start running after: 202411032224.48
+  Job Name: MPI_Blocking_Test1
+  Queue: -q class -W group_list=classq
+  Constraints: 
+  Using  20  cores on master node  asax020.asc.edu
+  Node list:  asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu
+  Cores:  20
+  Command typed:
+/scripts/run_script_mpi scriptB.sh     
+  Queue submit command:
+qsub -q class -W group_list=classq -j oe -N MPI_Blocking_Test1 -a 202411032224.48 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
+ 
+In file included from game_of_lifeB.c:1:
+board.h: In function 'init_board':
+board.h:23:17: warning: implicit declaration of function 'drand48' [-Wimplicit-function-declaration]
+   23 |             if (drand48() < 0.5) {
+      |                 ^~~~~~~
+Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations
+Wall clock time: 1.555412s
+Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations
+Wall clock time: 0.880354s
+Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations
+Wall clock time: 0.557836s
+Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations
+Wall clock time: 0.410724s
+Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations
+Wall clock time: 0.376424s
+Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations
+Wall clock time: 0.327643s
+Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations
+Wall clock time: 0.314757s

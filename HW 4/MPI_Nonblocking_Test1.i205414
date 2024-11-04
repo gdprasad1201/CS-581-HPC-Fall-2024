@@ -1,0 +1,18 @@
+ 
+============================================================
+=====     Queued job information at submit time        =====
+============================================================
+  The submitted file is: scriptNB.sh
+  The time limit is 12:00:00 HH:MM:SS.
+  The target directory is: /home/ualclsd0192/HW4
+  The memory limit is: 20gb
+  The job will start running after: 202411032225.12
+  Job Name: MPI_Nonblocking_Test1
+  Queue: -q class -W group_list=classq
+  Constraints: 
+  Command typed:
+/scripts/run_script_mpi scriptNB.sh     
+  Queue submit command:
+qsub -q class -W group_list=classq -j oe -N MPI_Nonblocking_Test1 -a 202411032225.12 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
+  Job number: 205414
+ 
