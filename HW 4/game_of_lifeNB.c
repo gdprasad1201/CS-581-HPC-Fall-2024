@@ -9,8 +9,6 @@
 
 #include "board.h"
 
-#define ROOT 0
-
 int main(int argc, char **argv) {
     if (argc != 3) {
         printf("Usage: %s <matrix size> <number of iterations> <output directory>\n", argv[0]);

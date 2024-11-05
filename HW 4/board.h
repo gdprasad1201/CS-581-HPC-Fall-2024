@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define ROOT 0
 #define ALIVE 1
 #define DEAD 0
 
@@ -48,7 +49,7 @@ void print_board(int* board, int M_local, int comm_size) {
 
 int get_top_neighbor(int rank) {
     // a top neighbor doesn't exist
-    if (rank == 0) {
+    if (rank == ROOT) {
         return MPI_PROC_NULL;
     } 
     else {
