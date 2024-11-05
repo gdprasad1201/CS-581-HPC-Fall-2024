@@ -46,8 +46,8 @@ int main(int argc, char **argv) {
     strcat(directory, ".txt");
 
     // track the time it takes for the program to fully run
-    double startwtime, endwtime;
-    startwtime = MPI_Wtime();
+    double startTime, endTime;
+    startTime = MPI_Wtime();
     
     // Use a 1D array to represent the 2D board
     int* board = (int *)malloc(N * N * sizeof(int));
@@ -149,10 +149,10 @@ int main(int argc, char **argv) {
     
     // print the final board
     if (rank == ROOT) {
-        endwtime = MPI_Wtime();
+        endTime = MPI_Wtime();
         print_board(board, N, size);
         printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, maxIterations);
-        printf("\nWall clock time: %fs\n", endwtime - startwtime);
+        printf("\nWall clock time: %fs\n", endTime - startTime);
     }
 
     free(board);
