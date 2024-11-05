@@ -21,7 +21,8 @@ void init_board(int* board) {
             // random value of 0 or 1
             if (drand48() < 0.5) {
                 board[row * N + col] = ALIVE;
-            } else {
+            } 
+            else {
                 board[row * N + col] = DEAD;
             }
         }
@@ -46,30 +47,23 @@ void print_board(int* board, int M_local, int comm_size) {
 }
 
 int get_top_neighbor(int rank) {
-    int neighbor_rank = 0;
-
     // a top neighbor doesn't exist
     if (rank == 0) {
-        neighbor_rank = MPI_PROC_NULL;
+        return MPI_PROC_NULL;
     } 
     else {
-        neighbor_rank = rank - 1;
+        return (rank - 1);
     }
-
-    return neighbor_rank;
 }
 
 int get_bottom_neighbor(int rank, int size) {
-    int neighbor_rank = 0;
-
     // a bottom neighbor doesn't exist
     if (rank == (size - 1)) {
-        neighbor_rank = MPI_PROC_NULL;
-    } else {
-        neighbor_rank = rank + 1;
+        return MPI_PROC_NULL;
+    } 
+    else {
+        return (rank + 1);
     }
-
-    return neighbor_rank;
 }
 
 int count_neighbors(int* board, int row, int col, int M_local, int rank, int size) {
@@ -121,36 +115,34 @@ int count_neighbors(int* board, int row, int col, int M_local, int rank, int siz
 bool update_board(int* board, int M_local, int rank, int size) {
     int neighbors = 0; 
     int* new_board = (int *)malloc(M_local * N * sizeof(int));
-    int final_row = M_local + 1;
     bool flag = false;
 
-    for (int row = 1; row < final_row; row++) {
+    for (int row = 1; row < M_local + 1; row++) {
         for (int col = 0; col < N; col++) {
             neighbors = count_neighbors(board, row, col, M_local, rank, size);
 
             if (board[row * N + col]) {
                 if (neighbors < 2 || neighbors > 3) {
-                    new_board[(row - 1) * N + col] = 0;
+                    new_board[(row - 1) * N + col] = DEAD;
                     flag = true;
                 }
                 else {
-                    new_board[(row - 1) * N + col] = 1;
+                    new_board[(row - 1) * N + col] = ALIVE;
                 }
             }
             else {
                 if (neighbors == 3) {
-                    new_board[(row - 1) * N + col] = 1;
+                    new_board[(row - 1) * N + col] = ALIVE;
                     flag = true;
                 }
-                // cell remains dead
                 else {
-                    new_board[(row - 1) * N + col] = 0;
+                    new_board[(row - 1) * N + col] = DEAD;
                 }
             }
         }
     }
 
-    for (int row = 1; row < final_row; row++) {
+    for (int row = 1; row < M_local + 1; row++) {
         for (int col = 0; col < N; col++) {
             board[row * N + col] = new_board[(row - 1) * N + col];
         }
