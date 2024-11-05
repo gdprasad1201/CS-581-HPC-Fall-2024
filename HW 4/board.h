@@ -11,7 +11,7 @@
 #define ALIVE 1
 #define DEAD 0
 
-int N, N, T;
+int N, maxIterations;
 char directory[100];
 
 void init_board(int* board) {

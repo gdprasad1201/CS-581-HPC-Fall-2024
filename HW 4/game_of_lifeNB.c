@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     }
 
     N = atoi(argv[1]);
-    T = atoi(argv[2]);
+    maxIterations = atoi(argv[2]);
     char processAMT[2];
     bool flag;
     
@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
 
     strcpy(directory, argv[3]);
     strcat(directory, "/output.");
+    // strcpy(directory, "output.");
     strcat(directory, argv[1]);
     strcat(directory, ".");
     strcat(directory, argv[2]);
@@ -92,8 +93,7 @@ int main(int argc, char **argv) {
     MPI_Status recv_stat, send_stat; // status for MPI_Recv and MPI_Send
     MPI_Request sreq1, sreq2, rreq1, rreq2; // request for MPI_Isend and MPI_Irecv
 
-    // every process updates their rows T number of times
-    for (int iteration = 0; iteration < T; iteration++) {
+    for (int iteration = 0; iteration < maxIterations; iteration++) {
         // process sends its top row to the previous process & receives the bottom neighbor from the next process
         if (remaining_rows == 0) {
             MPI_Isend(local_board + N, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, &sreq1);
@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
     if (rank == ROOT) {
         endwtime = MPI_Wtime();
         print_board(board, N, size);
-        printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, T);
+        printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, maxIterations);
         printf("\nWall clock time: %fs\n", endwtime - startwtime);
     }
 
