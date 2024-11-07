@@ -4,7 +4,7 @@
    Course Section: CS 581 
    Homework #: 4
    To Compile: mpicc -g -Wall -o game_of_lifeB game_of_lifeB.c
-   To Run: mpirun -n <number of processes> game_of_lifeB <matrix size> <number of iterations> <output directory>
+   To Run: mpirun -n <number of processes> game_of_lifeB <matrix size> <number of iterations> <final board output directory>
 */
 
 #include "board.h"
