@@ -4,7 +4,7 @@
    Course Section: CS 581 
    Homework #: 4
    To Compile: mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
-   To Run: mpirun -n <number of processes> ./game_of_lifeNB <matrix size> <number of iterations> <output directory>
+   To Run: mpirun -n <number of processes> game_of_lifeNB <matrix size> <number of iterations> <output directory>
 */
 
 #include "board.h"
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
     // setup the initial board
     if (rank == ROOT) {
-        init_board(board);
+        generateBoard(board);
     }
 
     int remaining_rows = N % size;
@@ -68,8 +68,8 @@ int main(int argc, char **argv) {
     int* local_board = (int *)malloc(total_rpp * N * sizeof(int));
 
     int local_board_size = rows_per_process * N;
-    int top_neighbor = get_top_neighbor(rank);
-    int bottom_neighbor = get_bottom_neighbor(rank, size);
+    int top_neighbor = getTopNeighbor(rank);
+    int bottom_neighbor = getBottomNeighbor(rank, size);
 
     int* send_counts = (int *)malloc(size * sizeof(int));
     int* displs = (int *)malloc(size * sizeof(int));
@@ -119,7 +119,7 @@ int main(int argc, char **argv) {
         MPI_Wait(&rreq2, &recv_stat);
 
         // update the board
-        flag = update_board(local_board, rows_per_process, rank, size);
+        flag = updateBoard(local_board, rows_per_process, rank, size);
 
         bool reduction_flag = false;
         MPI_Allreduce(&flag, &reduction_flag, 1, MPI_C_BOOL, MPI_LOR, MPI_COMM_WORLD);
@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
     // print the final board
     if (rank == ROOT) {
         endTime = MPI_Wtime();
-        print_board(board, N, size);
+        printBoard(board, N, size);
         printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, maxIterations);
         printf("\nWall clock time: %fs\n", endTime - startTime);
     }

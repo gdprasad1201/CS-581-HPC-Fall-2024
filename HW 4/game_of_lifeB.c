@@ -4,7 +4,7 @@
    Course Section: CS 581 
    Homework #: 4
    To Compile: mpicc -g -Wall -o game_of_lifeB game_of_lifeB.c
-   To Run: mpirun -n <number of processes> ./game_of_lifeB <matrix size> <number of iterations> <output directory>
+   To Run: mpirun -n <number of processes> game_of_lifeB <matrix size> <number of iterations> <output directory>
 */
 
 #include "board.h"
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 
     // setup the initial board
     if (rank == ROOT) {
-        init_board(board);
+        generateBoard(board);
     }
 
     int remaining_rows = N % size;
@@ -68,23 +68,23 @@ int main(int argc, char **argv) {
     int* local_board = (int *)malloc(total_rpp * N * sizeof(int));
 
     int local_board_size = rows_per_process * N;
-    int top_neighbor = get_top_neighbor(rank);
-    int bottom_neighbor = get_bottom_neighbor(rank, size);
+    int top_neighbor = getTopNeighbor(rank);
+    int bottom_neighbor = getBottomNeighbor(rank, size);
 
-    int* send_counts = (int *)malloc(size * sizeof(int));
-    int* displs = (int *)malloc(size * sizeof(int));
+    int* counts = (int *)malloc(size * sizeof(int));
+    int* displacements = (int *)malloc(size * sizeof(int));
     for (int i = 0; i < size; i++) {
-        send_counts[i] = rows_per_process * N;
-        displs[i] = i * rows_per_process * N;
+        counts[i] = rows_per_process * N;
+        displacements[i] = i * rows_per_process * N;
     }
-    send_counts[size - 1] += remaining_rows * N;
+    counts[size - 1] += remaining_rows * N;
 
     // send each process their rows
     if (remaining_rows == 0) {
         MPI_Scatter(board, local_board_size, MPI_INT, local_board + N, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
     } 
     else {
-        MPI_Scatterv(board, send_counts, displs, MPI_INT, local_board + N, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
+        MPI_Scatterv(board, counts, displacements, MPI_INT, local_board + N, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     
     for (int iteration = 0; iteration < maxIterations; iteration++) {
@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
         }
         
         // update the board
-        flag = update_board(local_board, rows_per_process, rank, size);
+        flag = updateBoard(local_board, rows_per_process, rank, size);
 
         bool reduction_flag = false;
         MPI_Allreduce(&flag, &reduction_flag, 1, MPI_C_BOOL, MPI_LOR, MPI_COMM_WORLD);
@@ -114,35 +114,25 @@ int main(int argc, char **argv) {
         }
     }
 
-    int* recv_counts = (int *)malloc(size * sizeof(int));
-    int* recv_displs = (int *)malloc(size * sizeof(int));
-    for (int i = 0; i < size; i++) {
-        recv_counts[i] = rows_per_process * N;
-        recv_displs[i] = i * rows_per_process * N;
-    }
-    recv_counts[size - 1] += remaining_rows * N;
-
     // gather the final results of all the rows into root
     if (remaining_rows == 0) {
         MPI_Gather(local_board + N, local_board_size, MPI_INT, board, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     else {
-        MPI_Gatherv(local_board + N, local_board_size, MPI_INT, board, send_counts, displs, MPI_INT, ROOT, MPI_COMM_WORLD);
+        MPI_Gatherv(local_board + N, local_board_size, MPI_INT, board, counts, displacements, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     // print the final board
     if (rank == ROOT) {
         endTime = MPI_Wtime();
-        print_board(board, N, size);
+        printBoard(board, N, size);
         printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, maxIterations);
         printf("\nWall clock time: %fs\n", endTime - startTime);
     }
 
     free(board);
     free(local_board);
-    free(send_counts);
-    free(displs);
-    free(recv_counts);
-    free(recv_displs);
+    free(counts);
+    free(displacements);
 
     MPI_Finalize();
     return 0;
