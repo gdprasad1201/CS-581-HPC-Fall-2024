@@ -10,11 +10,6 @@
 #include "board.h"
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
-        printf("Usage: %s <matrix size> <number of iterations> <output directory>\n", argv[0]);
-        return 1;
-    }
-
     N = atoi(argv[1]);
     maxIterations = atoi(argv[2]);
     char processAMT[2];
