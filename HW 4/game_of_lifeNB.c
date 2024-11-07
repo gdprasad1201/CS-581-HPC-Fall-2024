@@ -57,8 +57,7 @@ int main(int argc, char **argv) {
 
     int remaining_rows = N % size;
     int rows_per_process = N / size;
-    // If the number of rows is not evenly divisible by the number of processes,
-    // then the last process will have the remaining rows
+    // If the number of rows is not evenly divisible by the number of processes, then the last process will have the remaining rows
     if (rank == (size - 1)) {
         rows_per_process += remaining_rows;
     }

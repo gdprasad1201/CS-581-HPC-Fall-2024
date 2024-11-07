@@ -82,8 +82,7 @@ int countLiveNeighbors(int* board, int row, int col, int M_local, int rank, int 
     int right = (col + 1) < N;  // check if rightmost column
     int left = (col - 1) >= 0;  // check if leftmost column
 
-    // check that the cell position exists and then check if the cell is alive
-    // or dead
+    // check that the cell position exists and then check if the cell is alive or dead
     if (top && left && board[(row - 1) * N + (col - 1)]) {
         neighbors++;
     }
