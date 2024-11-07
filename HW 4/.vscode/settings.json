@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "string.h": "c"
+        ".fantomasignore": "ignore",
+        "string.h": "c",
+        "board.h": "c"
     }
 }
