@@ -77,7 +77,7 @@ int count_neighbors(int* board, int row, int col, int M_local, int rank, int siz
     }
     int bottom = 1;
     // very bottom row of the board DOESN'T have a bottom neighbor
-    if (rank == (size - 1) && row == (M_local)) {
+    if (rank == (size - 1) && row == M_local) {
         bottom = 0;
     }
     int right = (col + 1) < N;  // check if rightmost column
@@ -143,9 +143,11 @@ bool update_board(int* board, int M_local, int rank, int size) {
         }
     }
 
-    for (int row = 1; row < M_local + 1; row++) {
-        for (int col = 0; col < N; col++) {
-            board[row * N + col] = new_board[(row - 1) * N + col];
+    if (flag) {
+        for (int row = 1; row < M_local + 1; row++) {
+            for (int col = 0; col < N; col++) {
+                board[row * N + col] = new_board[(row - 1) * N + col];
+            }
         }
     }
 
