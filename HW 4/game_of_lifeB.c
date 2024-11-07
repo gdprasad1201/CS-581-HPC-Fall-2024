@@ -48,6 +48,15 @@ int main(int argc, char **argv) {
     // setup the initial board
     if (rank == ROOT) {
         generateBoard(board);
+        #ifdef DEBUG1
+            printf("*****Initial Board*****\n");
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    printf("%d ", board[i * N + j]);
+                }
+                printf("\n");
+            }
+        #endif
     }
 
     int remaining_rows = N % size;

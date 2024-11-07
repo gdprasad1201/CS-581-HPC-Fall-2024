@@ -16,15 +16,11 @@ int N, maxIterations;
 char directory[100];
 
 void generateBoard(int* board) {
+    // Use a fixed seed for reproducibility
+    srand(0);
     for (int row = 0; row < N; row++) {
-        srand(54321 | row);
         for (int col = 0; col < N; col++) {
-            if (drand48() < 0.5) {
-                board[row * N + col] = ALIVE;
-            } 
-            else {
-                board[row * N + col] = DEAD;
-            }
+            board[row * N + col] = rand() % 2;
         }
     }
 }
