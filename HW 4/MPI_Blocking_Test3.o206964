@@ -20,17 +20,24 @@ setting asax scratch directory
   Queue submit command:
 qsub -q class -W group_list=classq -j oe -N MPI_Blocking_Test3 -a 202411071510.23 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
  
-Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations
+Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations:
 Wall clock time: 2274.443711s
-Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations:
 Wall clock time: 1138.758456s
-Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations:
 Wall clock time: 549.449678s
-Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations:
 Wall clock time: 289.183909s
-Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations:
 Wall clock time: 232.126290s
-Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations:
 Wall clock time: 149.408839s
-Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations
+
+Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations:
 Wall clock time: 119.925489s
+

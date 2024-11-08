@@ -127,9 +127,18 @@ int main(int argc, char **argv) {
     // print the final board
     if (rank == ROOT) {
         endTime = MPI_Wtime();
+        #ifdef DEBUG1
+            printf("\n*****Final Board*****\n");
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    printf("%d ", board[i * N + j]);
+                }
+                printf("\n");
+            }
+        #endif
         printBoard(board, N, size);
-        printf("Matrix of size %d x %d with %d processes and %d maximum iterations", N, N, size, maxIterations);
-        printf("\nWall clock time: %fs\n", endTime - startTime);
+        printf("Matrix of size %d x %d with %d processes and %d maximum iterations:", N, N, size, maxIterations);
+        printf("\nWall clock time: %fs\n\n", endTime - startTime);
     }
 
     free(board);
