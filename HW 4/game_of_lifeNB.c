@@ -3,7 +3,7 @@
    Email: gdprasad@crimson.ua.edu
    Course Section: CS 581 
    Homework #: 4
-   To Compile: mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
+   To Compile: mpicc -g -Wall -std=c99 -o game_of_lifeNB game_of_lifeNB.c
    To Run: mpirun -n <number of processes> game_of_lifeNB <matrix size> <number of iterations> <output directory>
 */
 
