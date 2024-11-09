@@ -54,4 +54,3 @@ mpicc -g -Wall -std=c99 -o game_of_lifeNB game_of_lifeNB.c
 ```sh
 mpirun -n <number of processes> game_of_lifeNB <matrix size> <number of iterations> <output directory>
 ```
-
