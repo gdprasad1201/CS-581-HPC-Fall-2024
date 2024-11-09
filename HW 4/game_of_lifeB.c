@@ -59,55 +59,55 @@ int main(int argc, char **argv) {
         #endif
     }
 
-    int remaining_rows = N % size;
-    int rows_per_process = N / size;
+    int remainingRows = N % size;
+    int rowsPerCore = N / size;
     // If the number of rows is not evenly divisible by the number of processes, then the last process will have the remaining rows
     if (rank == (size - 1)) {
-        rows_per_process += remaining_rows;
+        rowsPerCore += remainingRows;
     }
 
     // Use a 1D array to represent the 2D board
-    int total_rpp = rows_per_process + 2;  // +2 for the top & bottom neighbor rows
-    int* local_board = (int *)malloc(total_rpp * N * sizeof(int));
+    int totalRowsPerCore = rowsPerCore + 2;  // +2 for the top & bottom neighbor rows
+    int* localBoard = (int *)malloc(totalRowsPerCore * N * sizeof(int));
 
-    int local_board_size = rows_per_process * N;
-    int top_neighbor = getTopNeighbor(rank);
-    int bottom_neighbor = getBottomNeighbor(rank, size);
+    int localSize = rowsPerCore * N;
+    int topNeighbor = getTopNeighbor(rank);
+    int bottomNeighbor = getBottomNeighbor(rank, size);
 
     int* counts = (int *)malloc(size * sizeof(int));
     int* displacements = (int *)malloc(size * sizeof(int));
     for (int i = 0; i < size; i++) {
-        counts[i] = rows_per_process * N;
-        displacements[i] = i * rows_per_process * N;
+        counts[i] = rowsPerCore * N;
+        displacements[i] = i * rowsPerCore * N;
     }
-    counts[size - 1] += remaining_rows * N;
+    counts[size - 1] += remainingRows * N;
 
     // send each process their rows
-    if (remaining_rows == 0) {
-        MPI_Scatter(board, local_board_size, MPI_INT, local_board + N, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
+    if (remainingRows == 0) {
+        MPI_Scatter(board, localSize, MPI_INT, localBoard + N, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);
     } 
     else {
-        MPI_Scatterv(board, counts, displacements, MPI_INT, local_board + N, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
+        MPI_Scatterv(board, counts, displacements, MPI_INT, localBoard + N, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     
     for (int iteration = 0; iteration < maxIterations; iteration++) {
         // process sends its top row to the previous process & receives the bottom neighbor from the next process
-        if (remaining_rows == 0) {
-            MPI_Sendrecv(local_board + N, N, MPI_INT, top_neighbor, 0, local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        if (remainingRows == 0) {
+            MPI_Sendrecv(localBoard + N, N, MPI_INT, topNeighbor, 0, localBoard + (totalRowsPerCore - 1) * N, N, MPI_INT, bottomNeighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         else {
-            MPI_Sendrecv(local_board + N, N, MPI_INT, top_neighbor, 0, local_board + (total_rpp - 1) * N, N, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Sendrecv(localBoard + N, N, MPI_INT, topNeighbor, 0, localBoard + (totalRowsPerCore - 1) * N, N, MPI_INT, bottomNeighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         // process sends its bottom row to the next process & receives the top neighbor from the previous process
-        if (remaining_rows == 0) {
-            MPI_Sendrecv(local_board + (total_rpp - 2) * N, N, MPI_INT, bottom_neighbor, 0, local_board, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        if (remainingRows == 0) {
+            MPI_Sendrecv(localBoard + (totalRowsPerCore - 2) * N, N, MPI_INT, bottomNeighbor, 0, localBoard, N, MPI_INT, topNeighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         else {
-            MPI_Sendrecv(local_board + (total_rpp - 2) * N, N, MPI_INT, bottom_neighbor, 0, local_board, N, MPI_INT, top_neighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Sendrecv(localBoard + (totalRowsPerCore - 2) * N, N, MPI_INT, bottomNeighbor, 0, localBoard, N, MPI_INT, topNeighbor, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
         
         // update the board
-        flag = updateBoard(local_board, rows_per_process, rank, size);
+        flag = updateBoard(localBoard, rowsPerCore, rank, size);
 
         bool reduction_flag = false;
         MPI_Allreduce(&flag, &reduction_flag, 1, MPI_C_BOOL, MPI_LOR, MPI_COMM_WORLD);
@@ -118,11 +118,11 @@ int main(int argc, char **argv) {
     }
 
     // gather the final results of all the rows into root
-    if (remaining_rows == 0) {
-        MPI_Gather(local_board + N, local_board_size, MPI_INT, board, local_board_size, MPI_INT, ROOT, MPI_COMM_WORLD);
+    if (remainingRows == 0) {
+        MPI_Gather(localBoard + N, localSize, MPI_INT, board, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     else {
-        MPI_Gatherv(local_board + N, local_board_size, MPI_INT, board, counts, displacements, MPI_INT, ROOT, MPI_COMM_WORLD);
+        MPI_Gatherv(localBoard + N, localSize, MPI_INT, board, counts, displacements, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     // print the final board
     if (rank == ROOT) {
@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
     }
 
     free(board);
-    free(local_board);
+    free(localBoard);
     free(counts);
     free(displacements);
 
