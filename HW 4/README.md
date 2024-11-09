@@ -1,7 +1,7 @@
 # Synchronous (Non-blocking) and Asynchronous (Blocking) Implentations of the Game of Life
 ## Installation
 ### Windows 11
-1. Download the Cygwin installer from [Cygwin's official website](https://www.cygwin.com/){:target="_blank"}.
+1. Download the Cygwin installer from [Cygwin's official website](https://www.cygwin.com/)
 2. Run the installer and follow the installation instructions.
 3. During the package selection step, search for and select the following packages:
     - `gcc-core`
