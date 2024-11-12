@@ -3,7 +3,7 @@
    Email: gdprasad@crimson.ua.edu
    Course Section: CS 581 
    Homework #: 4
-   To Compile: mpicc -g -Wall -std=c99 -o game_of_lifeNB game_of_lifeNB.c
+   To Compile: mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
    To Run: mpirun -n <number of processes> game_of_lifeNB <matrix size> <number of iterations> <output directory>
 */
 
@@ -12,7 +12,6 @@
 int main(int argc, char **argv) {
     N = atoi(argv[1]);
     maxIterations = atoi(argv[2]);
-    char processAMT[2];
     bool flag;
     
     MPI_Init(&argc, &argv);
@@ -27,6 +26,9 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    char sizeChar[2];
+    sprintf(sizeChar, "%d", size);
+    
     strcpy(directory, argv[3]);
     strcat(directory, "/output.");
     // strcpy(directory, "output.");
@@ -34,13 +36,11 @@ int main(int argc, char **argv) {
     strcat(directory, ".");
     strcat(directory, argv[2]);
     strcat(directory, ".");
-    sprintf(processAMT, "%d", size);
-    strcat(directory, processAMT);
+    strcat(directory, sizeChar);
     strcat(directory, ".txt");
 
     // track the time it takes for the program to fully run
     double startTime, endTime;
-    startTime = MPI_Wtime();
     
     // Use a 1D array to represent the 2D board
     int* board = (int *)malloc(N * N * sizeof(int));
@@ -48,8 +48,9 @@ int main(int argc, char **argv) {
     // setup the initial board
     if (rank == ROOT) {
         generateBoard(board);
+        startTime = MPI_Wtime();
         #ifdef DEBUG1
-            printf("*****Initial Board*****\n");
+            printf("Initial Board:\n");
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     printf("%d ", board[i * N + j]);
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
     int remainingRows = N % size;
     int rowsPerCore = N / size;
     // If the number of rows is not evenly divisible by the number of processes, then the last process will have the remaining rows
-    if (rank == (size - 1)) {
+    if (rank == size - 1) {
         rowsPerCore += remainingRows;
     }
 
@@ -87,8 +88,7 @@ int main(int argc, char **argv) {
         MPI_Scatterv(board, send_counts, displs, MPI_INT, localBoard + N, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);
     }
     else {
-        MPI_Scatterv(board, send_counts, displs, MPI_INT, localBoard + N, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);
-        
+        MPI_Scatterv(board, send_counts, displs, MPI_INT, localBoard + N, localSize, MPI_INT, ROOT, MPI_COMM_WORLD);  
     } 
 
     MPI_Status recv_stat, send_stat; // status for MPI_Recv and MPI_Send
@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
     if (rank == ROOT) {
         endTime = MPI_Wtime();
         #ifdef DEBUG1
-            printf("\n*****Final Board*****\n");
+            printf("\nFinal Board:\n");
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     printf("%d ", board[i * N + j]);
@@ -160,9 +160,9 @@ int main(int argc, char **argv) {
                 printf("\n");
             }
         #endif
-        printBoard(board, N, size);
-        printf("Matrix of size %d x %d with %d processes and %d maximum iterations:", N, N, size, maxIterations);
-        printf("\nWall clock time: %fs\n\n", endTime - startTime);
+        printBoard(board, N);
+        printf("Matrix of size %d x %d with %d processes and %d maximum iterations:\n", N, N, size, maxIterations);
+        printf("\t\tWall clock time: %fs\n\n", endTime - startTime);
     }
 
     free(board);

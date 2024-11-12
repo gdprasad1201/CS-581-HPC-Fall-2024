@@ -36,7 +36,7 @@
 ## Blocking version of the Game of Life using MPI
 - To Compile:
 ```sh
-mpicc -g -Wall -std=c99 -o game_of_lifeB game_of_lifeB.c
+mpicc -g -Wall -o game_of_lifeB game_of_lifeB.c
 ```
 
 - To Run:
@@ -47,7 +47,7 @@ mpirun -n <number of processes> game_of_lifeB <matrix size> <number of iteration
 ## Non-blocking version of the Game of Life using MPI
 - To Compile:
 ```sh
-mpicc -g -Wall -std=c99 -o game_of_lifeNB game_of_lifeNB.c
+mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
 ```
 
 - To Run:
