@@ -2,7 +2,7 @@
 source /apps/profiles/modules_asax.sh.dyn
 module load openmpi/4.1.4-gcc11
 
-mpicc -g -Wall -o game_of_lifeNB game_of_lifeNB.c
+mpicc -g -Wall -std=c99 -o game_of_lifeNB game_of_lifeNB.c
 
 mpirun -n 1 game_of_lifeNB 5000 5000 /scratch/ualclsd0192
 mpirun -n 2 game_of_lifeNB 5000 5000 /scratch/ualclsd0192
