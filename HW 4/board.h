@@ -64,7 +64,7 @@ int countLiveNeighbors(int* board, int row, int col, int localRows, int rank, in
     int neighbors = 0, top = 1, bottom = 1;
 
     // very top row of the board DOESN'T have a top neighbor
-    if (rank == 0 && row == 1) {
+    if (rank == ROOT && row == 1) {
         top = 0;
     }
 
