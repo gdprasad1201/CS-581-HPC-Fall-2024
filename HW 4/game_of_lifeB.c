@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         generateBoard(board);
         startTime = MPI_Wtime();
         #ifdef DEBUG1
-            printf("*****Initial Board*****\n");
+            printf("Initial Board:\n");
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     printf("%d ", board[i * N + j]);
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
     int remainingRows = N % size;
     int rowsPerCore = N / size;
     // If the number of rows is not evenly divisible by the number of processes, then the last process will have the remaining rows
-    if (rank == (size - 1)) {
+    if (rank == size - 1) {
         rowsPerCore += remainingRows;
     }
 
@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
     if (rank == ROOT) {
         endTime = MPI_Wtime();
         #ifdef DEBUG1
-            printf("\n*****Final Board*****\n");
+            printf("\nFinal Board:\n");
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
                     printf("%d ", board[i * N + j]);
