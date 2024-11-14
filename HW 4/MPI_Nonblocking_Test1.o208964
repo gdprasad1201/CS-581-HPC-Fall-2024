@@ -3,41 +3,41 @@ setting asax scratch directory
 ============================================================
 =====         Summary of your script job               =====
 ============================================================
-  The script file is: scriptB.sh
+  The script file is: scriptNB.sh
   The time limit is 12:00:00 HH:MM:SS.
   The target directory is: /home/ualclsd0192/HW4
-  The working directory is:  /scratch-local/ualclsd0192.MPI_Blocking_Test2.206963.asax-pbs1
+  The working directory is:  /scratch-local/ualclsd0192.MPI_Nonblocking_Test1.208964.asax-pbs1
   The memory limit is: 20gb
-  The job will start running after: 202411071510.08
-  Job Name: MPI_Blocking_Test2
+  The job will start running after: 202411121603.20
+  Job Name: MPI_Nonblocking_Test1
   Queue: -q class -W group_list=classq
   Constraints: 
   Using  20  cores on master node  asax020.asc.edu
   Node list:  asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu asax020.asc.edu
   Cores:  20
   Command typed:
-/scripts/run_script_mpi scriptB.sh     
+/scripts/run_script_mpi scriptNB.sh     
   Queue submit command:
-qsub -q class -W group_list=classq -j oe -N MPI_Blocking_Test2 -a 202411071510.08 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
+qsub -q class -W group_list=classq -j oe -N MPI_Nonblocking_Test1 -a 202411121603.20 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
  
 Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations:
-Wall clock time: 2261.905166s
+		Wall clock time: 2255.976154s
 
 Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations:
-Wall clock time: 1136.502533s
+		Wall clock time: 1127.037527s
 
 Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations:
-Wall clock time: 551.239332s
+		Wall clock time: 548.102434s
 
 Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations:
-Wall clock time: 280.776190s
+		Wall clock time: 279.109187s
 
 Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations:
-Wall clock time: 233.773438s
+		Wall clock time: 237.671920s
 
 Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations:
-Wall clock time: 148.492480s
+		Wall clock time: 148.765085s
 
 Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations:
-Wall clock time: 129.169802s
+		Wall clock time: 120.707381s
 

@@ -6,9 +6,9 @@ setting asax scratch directory
   The script file is: scriptB.sh
   The time limit is 12:00:00 HH:MM:SS.
   The target directory is: /home/ualclsd0192/HW4
-  The working directory is:  /scratch-local/ualclsd0192.MPI_Blocking_Test3.206964.asax-pbs1
+  The working directory is:  /scratch-local/ualclsd0192.MPI_Blocking_Test3.208963.asax-pbs1
   The memory limit is: 20gb
-  The job will start running after: 202411071510.23
+  The job will start running after: 202411121602.56
   Job Name: MPI_Blocking_Test3
   Queue: -q class -W group_list=classq
   Constraints: 
@@ -18,26 +18,26 @@ setting asax scratch directory
   Command typed:
 /scripts/run_script_mpi scriptB.sh     
   Queue submit command:
-qsub -q class -W group_list=classq -j oe -N MPI_Blocking_Test3 -a 202411071510.23 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
+qsub -q class -W group_list=classq -j oe -N MPI_Blocking_Test3 -a 202411121602.56 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
  
 Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations:
-Wall clock time: 2274.443711s
+		Wall clock time: 2275.254793s
 
 Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations:
-Wall clock time: 1138.758456s
+		Wall clock time: 1139.198702s
 
 Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations:
-Wall clock time: 549.449678s
+		Wall clock time: 550.388498s
 
 Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations:
-Wall clock time: 289.183909s
+		Wall clock time: 278.128223s
 
 Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations:
-Wall clock time: 232.126290s
+		Wall clock time: 237.612626s
 
 Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations:
-Wall clock time: 149.408839s
+		Wall clock time: 148.448597s
 
 Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations:
-Wall clock time: 119.925489s
+		Wall clock time: 121.533316s
 

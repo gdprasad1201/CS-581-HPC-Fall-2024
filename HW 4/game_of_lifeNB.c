@@ -52,12 +52,12 @@ int main(int argc, char **argv) {
 
     int remainingRows = N % size;
     int rowsPerCore = N / size;
+    
     // If the number of rows is not evenly divisible by the number of processes, then the last process will have the remaining rows
     if (rank == (size - 1)) {
         rowsPerCore += remainingRows;
     }
 
-    // Use a 1D array to represent the 2D board
     int totalRowsPerCore = rowsPerCore + 2;  // +2 for the top & bottom neighbor rows
     int* localBoard = (int *)malloc(totalRowsPerCore * N * sizeof(int));
 

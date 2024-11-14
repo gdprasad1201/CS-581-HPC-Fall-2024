@@ -63,24 +63,18 @@ int getBottomNeighbor(int rank, int size) {
 int countLiveNeighbors(int* board, int row, int col, int localRows, int rank, int size) {
     int neighbors = 0, top = 1, bottom = 1;
 
-    // very top row of the board DOESN'T have a top neighbor
+    // Very top row of the board has no top neighbor
     if (rank == ROOT && row == 1) {
         top = 0;
     }
 
-    // very bottom row of the board DOESN'T have a bottom neighbor
+    // Very bottom row of the board has no bottom neighbor
     if (rank == (size - 1) && row == localRows) {
         bottom = 0;
-    }
-
-    // check if the cell is on the edge of the board
-    int right = (col + 1) < N;  
-
-    // check if the cell is on the edge of the board
-    int left = (col - 1) >= 0;  
+    } 
 
     // check all 8 neighbors
-    if (top && left && board[(row - 1) * N + (col - 1)]) {
+    if (top && ((col - 1) >= 0) && board[(row - 1) * N + (col - 1)]) {
         neighbors++;
     }
 
@@ -88,15 +82,15 @@ int countLiveNeighbors(int* board, int row, int col, int localRows, int rank, in
         neighbors++;
     }
 
-    if (top && right && board[(row - 1) * N + (col + 1)]) {
+    if (top && ((col + 1) < N) && board[(row - 1) * N + (col + 1)]) {
         neighbors++;
     }
 
-    if (right && board[row * N + (col + 1)]) {
+    if (((col + 1) < N) && board[row * N + (col + 1)]) {
         neighbors++;
     }
     
-    if (bottom && right && board[(row + 1) * N + (col + 1)]) {
+    if (bottom && ((col + 1) < N) && board[(row + 1) * N + (col + 1)]) {
         neighbors++;
     }
 
@@ -104,11 +98,11 @@ int countLiveNeighbors(int* board, int row, int col, int localRows, int rank, in
         neighbors++;
     }
 
-    if (bottom && left && board[(row + 1) * N + (col - 1)]) {
+    if (bottom && ((col - 1) >= 0) && board[(row + 1) * N + (col - 1)]) {
         neighbors++;
     }
 
-    if (left && board[row * N + (col - 1)]) {
+    if (((col - 1) >= 0) && board[row * N + (col - 1)]) {
         neighbors++;
     }
 

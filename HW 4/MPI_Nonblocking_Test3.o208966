@@ -6,9 +6,9 @@ setting asax scratch directory
   The script file is: scriptNB.sh
   The time limit is 12:00:00 HH:MM:SS.
   The target directory is: /home/ualclsd0192/HW4
-  The working directory is:  /scratch-local/ualclsd0192.MPI_Nonblocking_Test3.206966.asax-pbs1
+  The working directory is:  /scratch-local/ualclsd0192.MPI_Nonblocking_Test3.208966.asax-pbs1
   The memory limit is: 20gb
-  The job will start running after: 202411071511.07
+  The job will start running after: 202411121604.27
   Job Name: MPI_Nonblocking_Test3
   Queue: -q class -W group_list=classq
   Constraints: 
@@ -18,26 +18,26 @@ setting asax scratch directory
   Command typed:
 /scripts/run_script_mpi scriptNB.sh     
   Queue submit command:
-qsub -q class -W group_list=classq -j oe -N MPI_Nonblocking_Test3 -a 202411071511.07 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
+qsub -q class -W group_list=classq -j oe -N MPI_Nonblocking_Test3 -a 202411121604.27 -r n -M gdprasad@crimson.ua.edu -l walltime=12:00:00 -l select=20:mpiprocs=1:mem=1000mb 
  
 Matrix of size 5000 x 5000 with 1 processes and 5000 maximum iterations:
-Wall clock time: 2252.624463s
+		Wall clock time: 2267.936777s
 
 Matrix of size 5000 x 5000 with 2 processes and 5000 maximum iterations:
-Wall clock time: 1142.861205s
+		Wall clock time: 1143.805560s
 
 Matrix of size 5000 x 5000 with 4 processes and 5000 maximum iterations:
-Wall clock time: 554.315564s
+		Wall clock time: 564.631244s
 
 Matrix of size 5000 x 5000 with 8 processes and 5000 maximum iterations:
-Wall clock time: 282.435465s
+		Wall clock time: 282.032497s
 
 Matrix of size 5000 x 5000 with 10 processes and 5000 maximum iterations:
-Wall clock time: 235.044146s
+		Wall clock time: 236.793498s
 
 Matrix of size 5000 x 5000 with 16 processes and 5000 maximum iterations:
-Wall clock time: 148.409218s
+		Wall clock time: 154.516396s
 
 Matrix of size 5000 x 5000 with 20 processes and 5000 maximum iterations:
-Wall clock time: 119.250061s
+		Wall clock time: 129.688689s
 
