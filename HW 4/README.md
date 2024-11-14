@@ -27,12 +27,17 @@
     ```
 
 ### MacOS
-1. Install Open MPI using Homebrew:
+1. Install Open MPI using Homebrew in the Terminal:
     ```sh
     brew install open-mpi
     ```
-2. Open Terminal and navigate to the directory containing your code.
-3. Compile and run the code using the provided commands.
+2. Verify the installation by running in the Terminal:
+    ```sh
+    mpicc --version
+    mpirun --version
+    ``` 
+3. Open Terminal and navigate to the directory containing your code.
+4. Compile and run the code using the provided commands.
 ## Blocking version of the Game of Life using MPI
 - To Compile:
 ```sh
