@@ -1,3 +1,12 @@
+/* 
+   Name: Gowtham Prasad
+   Email: gdprasad@crimson.ua.edu
+   Course: CS 581 
+   Homework #: 5
+   Instructions to compile the program: icx -Wall -o hw5_CPU hw5_CPU.c
+   Instructions to run the program: ./hw5_CPU <matrix_size> <max_generations> <output_directory>
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

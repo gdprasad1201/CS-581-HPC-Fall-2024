@@ -1,3 +1,12 @@
+/* 
+   Name: Gowtham Prasad
+   Email: gdprasad@crimson.ua.edu
+   Course: CS 581 
+   Homework #: 5
+   Instructions to compile the program: nvcc hw5_GPU_Baseline.cu -o hw5_GPU_Baseline
+   Instructions to run the program: ./hw5_GPU_Baseline <matrix_size> <max_generations> <output_directory>
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <cuda.h>
