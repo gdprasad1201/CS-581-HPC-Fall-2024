@@ -2,6 +2,7 @@
     "files.associations": {
         ".fantomasignore": "ignore",
         "string.h": "c",
-        "board.h": "c"
+        "board.h": "c",
+        "stdio.h": "c"
     }
 }
